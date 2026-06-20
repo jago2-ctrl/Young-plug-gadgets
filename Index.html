@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Young Plug Gadgets — Premium Gadget Store</title>
+<meta name="description" content="Shop genuine smartphones, gaming consoles, earbuds, smart watches, chargers and accessories. Premium prices, verified stock." />
+
+<!-- React 18 -->
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<!-- Babel standalone: lets the browser compile the JSX below at runtime -->
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<!-- Tailwind CSS (play CDN, JIT) -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  html, body { margin: 0; padding: 0; background: #FAF6F1; }
+  * { font-family: 'Inter', system-ui, sans-serif; box-sizing: border-box; }
+  ::selection { background: #6B4226; color: #fff; }
+  input[type="range"] { accent-color: #6B4226; }
+  input[type="checkbox"] { accent-color: #6B4226; }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-thumb { background: #C68B59; border-radius: 4px; }
+  #root { min-height: 100vh; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" data-presets="react">
+/* ---------------------------------------------------------------------- */
+/*  ICON LIBRARY — inline SVGs replacing lucide-react for a single-file    */
+/*  build. Same prop API: size, color, fill, strokeWidth, style, className */
+/* ---------------------------------------------------------------------- */
+function Icon({ children, size = 24, color, fill = "none", strokeWidth = 2, style, className, ...rest }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill={fill}
+      stroke={color || "currentColor"}
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      style={style}
+      className={className}
+      {...rest}
+    >
+      {children}
+    </svg>
+  );
+}
+
+const Plug = (p) => <Icon {...p}><path d="M9 2v6m6-6v6M5 11h14l-1 4a6 6 0 0 1-12 0z"/><line x1="12" y1="21" x2="12" y2="17"/></Icon>;
+const Smartphone = (p) => <Icon {...p}><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></Icon>;
+const Gamepad2 = (p) => <Icon {...p}><line x1="6" y1="11" x2="10" y2="11"/><line x1="8" y1="9" x2="8" y2="13"/><line x1="15" y1="12" x2="15.01" y2="12"/><line x1="18" y1="10" x2="18.01" y2="10"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.544-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.152A4 4 0 0 0 17.32 5z"/></Icon>;
+const Headphones = (p) => <Icon {...p}><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></Icon>;
+const Watch = (p) => <Icon {...p}><circle cx="12" cy="12" r="7"/><polyline points="12 9 12 12 13.5 13.5"/><path d="M16.51 17.35l-.35 3.83a2 2 0 0 1-2 1.82H9.83a2 2 0 0 1-2-1.82l-.35-3.83m.01-10.7l.35-3.83A2 2 0 0 1 9.83 1h4.35a2 2 0 0 1 2 1.82l.35 3.83"/></Icon>;
+const BatteryCharging = (p) => <Icon {...p}><path d="M5 18H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3.19M15 6h2a2 2 0 0 1 2 2v1m0 6v1a2 2 0 0 1-2 2h-3.19"/><line x1="23" y1="13" x2="23" y2="11"/><polyline points="11 6 7 12 13 12 9 18"/></Icon>;
+const Cable = (p) => <Icon {...p}><path d="M4 9a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1a2 2 0 0 0 2 2h0a2 2 0 0 0 2-2V9a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2"/><line x1="6" y1="7" x2="6" y2="4"/><line x1="18" y1="14" x2="18" y2="17"/></Icon>;
+const Keyboard = (p) => <Icon {...p}><rect x="2" y="4" width="20" height="16" rx="2" ry="2"/><line x1="6" y1="8" x2="6.01" y2="8"/><line x1="10" y1="8" x2="10.01" y2="8"/><line x1="14" y1="8" x2="14.01" y2="8"/><line x1="18" y1="8" x2="18.01" y2="8"/><line x1="6" y1="12" x2="6.01" y2="12"/><line x1="10" y1="12" x2="10.01" y2="12"/><line x1="14" y1="12" x2="14.01" y2="12"/><line x1="18" y1="12" x2="18.01" y2="12"/><line x1="6" y1="16" x2="18" y2="16"/></Icon>;
+const Search = (p) => <Icon {...p}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></Icon>;
+const ShoppingCart = (p) => <Icon {...p}><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></Icon>;
+const Heart = (p) => <Icon {...p}><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></Icon>;
+const Menu = (p) => <Icon {...p}><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></Icon>;
+const X = (p) => <Icon {...p}><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></Icon>;
+const Star = (p) => <Icon {...p}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></Icon>;
+const Plus = (p) => <Icon {...p}><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></Icon>;
+const Minus = (p) => <Icon {...p}><line x1="5" y1="12" x2="19" y2="12"/></Icon>;
+const Trash2 = (p) => <Icon {...p}><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></Icon>;
+const MessageCircle = (p) => <Icon {...p}><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></Icon>;
+const Mail = (p) => <Icon {...p}><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></Icon>;
+const MapPin = (p) => <Icon {...p}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></Icon>;
+const Phone = (p) => <Icon {...p}><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></Icon>;
+const Check = (p) => <Icon {...p}><polyline points="20 6 9 17 4 12"/></Icon>;
+const SlidersHorizontal = (p) => <Icon {...p}><line x1="21" y1="4" x2="14" y2="4"/><line x1="10" y1="4" x2="3" y2="4"/><line x1="21" y1="12" x2="12" y2="12"/><line x1="8" y1="12" x2="3" y2="12"/><line x1="21" y1="20" x2="16" y2="20"/><line x1="12" y1="20" x2="3" y2="20"/><line x1="14" y1="2" x2="14" y2="6"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="16" y1="18" x2="16" y2="22"/></Icon>;
+const ArrowRight = (p) => <Icon {...p}><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></Icon>;
+const ArrowLeft = (p) => <Icon {...p}><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></Icon>;
+const ShieldCheck = (p) => <Icon {...p}><path d="M20 13c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V5l8-3 8 3z"/><polyline points="9 12 11 14 15 10"/></Icon>;
+const Truck = (p) => <Icon {...p}><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></Icon>;
+const RotateCcw = (p) => <Icon {...p}><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></Icon>;
+const Send = (p) => <Icon {...p}><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></Icon>;
+const User = (p) => <Icon {...p}><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></Icon>;
+const Lock = (p) => <Icon {...p}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></Icon>;
+const Eye = (p) => <Icon {...p}><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></Icon>;
+const EyeOff = (p) => <Icon {...p}><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></Icon>;
+const Clock = (p) => <Icon {...p}><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></Icon>;
+const Tag = (p) => <Icon {...p}><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></Icon>;
+const Package = (p) => <Icon {...p}><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></Icon>;
+const LayoutDashboard = (p) => <Icon {...p}><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></Icon>;
+const Users = (p) => <Icon {...p}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></Icon>;
+const Archive = (p) => <Icon {...p}><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></Icon>;
+const ArchiveRestore = (p) => <Icon {...p}><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><path d="M10 13l2-2 2 2"/><line x1="12" y1="11" x2="12" y2="17"/></Icon>;
+const CheckCircle2 = (p) => <Icon {...p}><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></Icon>;
+const XCircle = (p) => <Icon {...p}><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></Icon>;
+const TrendingUp = (p) => <Icon {...p}><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></Icon>;
+
+
+/* ---------------------------------------------------------------------- */
+/*  THEME TOKENS — White & Brown                                          */
+/* ---------------------------------------------------------------------- */
+const C = {
+  bg: "#FAF6F1",
+  surface: "#FFFFFF",
+  surfaceAlt: "#F3EAE0",
+  border: "#E6D9C8",
+  brown: "#6B4226",
+  brownDark: "#3F2A1C",
+  brownLight: "#C68B59",
+  text: "#2B1B12",
+  muted: "#8A7468",
+  success: "#3F8F5F",
+  warning: "#C77B2E",
+  danger: "#B3463B",
+};
+const FONT_DISPLAY = "'Fraunces', Georgia, serif";
+const FONT_BODY = "'Inter', system-ui, sans-serif";
+const HERO_IMAGE = "data:image/jpeg;base64,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";
+
+const naira = (n) => "₦" + n.toLocaleString("en-NG");
+const slugify = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+
+/* ---------------------------------------------------------------------- */
+/*  CATEGORIES                                                            */
+/* ---------------------------------------------------------------------- */
+const CATEGORIES = [
+  { id: "smartphones", name: "Smartphones", icon: Smartphone },
+  { id: "gaming", name: "Gaming Consoles", icon: Gamepad2 },
+  { id: "audio", name: "Earbuds & Audio", icon: Headphones },
+  { id: "wearables", name: "Smart Watches", icon: Watch },
+  { id: "power", name: "Chargers & Power", icon: BatteryCharging },
+  { id: "accessories", name: "Phone Accessories", icon: Cable },
+  { id: "computer-accessories", name: "Computer Accessories", icon: Keyboard },
+];
+
+/* ---------------------------------------------------------------------- */
+/*  DATA GENERATORS — keeps a 50+ product catalog readable                */
+/* ---------------------------------------------------------------------- */
+const seededRating = (i) => +(4.3 + ((i * 7) % 6) * 0.1).toFixed(1);
+const seededReviews = (i) => 38 + ((i * 53) % 260);
+const seededStock = (i, forceZero) => (forceZero ? 0 : ((i * 17) % 41) + 3);
+
+const OLD_STORAGE = ["64GB", "128GB", "256GB"];
+const STD_STORAGE = ["128GB", "256GB", "512GB"];
+const PRO_STORAGE = ["256GB", "512GB", "1TB"];
+const COLORS_CLASSIC = ["Black", "White", "Blue", "Coral"];
+const COLORS_PASTEL = ["Midnight", "Starlight", "Blue", "Pink", "Red"];
+const COLORS_PRO = ["Space Black", "Silver", "Gold", "Deep Purple"];
+const COLORS_TITANIUM = ["Black Titanium", "White Titanium", "Natural Titanium", "Desert Titanium"];
+
+// [name, year, price, chip, display, camera, storages, colors, comingSoon]
+const IPHONES = [
+  ["iPhone XR", 2018, 320000, "A12 Bionic", "6.1\" Liquid Retina HD", "12MP single + Portrait mode", OLD_STORAGE, COLORS_CLASSIC],
+  ["iPhone XS", 2018, 380000, "A12 Bionic", "5.8\" Super Retina OLED", "12MP dual", OLD_STORAGE, ["Space Gray", "Silver", "Gold"]],
+  ["iPhone XS Max", 2018, 420000, "A12 Bionic", "6.5\" Super Retina OLED", "12MP dual", OLD_STORAGE, ["Space Gray", "Silver", "Gold"]],
+  ["iPhone 11", 2019, 350000, "A13 Bionic", "6.1\" Liquid Retina HD", "12MP dual", OLD_STORAGE, COLORS_CLASSIC],
+  ["iPhone 11 Pro", 2019, 470000, "A13 Bionic", "5.8\" Super Retina XDR", "12MP triple", OLD_STORAGE, COLORS_PRO],
+  ["iPhone 11 Pro Max", 2019, 520000, "A13 Bionic", "6.5\" Super Retina XDR", "12MP triple", OLD_STORAGE, COLORS_PRO],
+  ["iPhone 12 Mini", 2020, 380000, "A14 Bionic", "5.4\" Super Retina XDR", "12MP dual", STD_STORAGE, COLORS_PASTEL],
+  ["iPhone 12", 2020, 430000, "A14 Bionic", "6.1\" Super Retina XDR", "12MP dual", STD_STORAGE, COLORS_PASTEL],
+  ["iPhone 12 Pro", 2020, 560000, "A14 Bionic", "6.1\" Super Retina XDR", "12MP triple + LiDAR", STD_STORAGE, COLORS_PRO],
+  ["iPhone 12 Pro Max", 2020, 620000, "A14 Bionic", "6.7\" Super Retina XDR", "12MP triple + LiDAR", STD_STORAGE, COLORS_PRO],
+  ["iPhone 13 Mini", 2021, 460000, "A15 Bionic", "5.4\" Super Retina XDR", "12MP dual", STD_STORAGE, COLORS_PASTEL],
+  ["iPhone 13", 2021, 520000, "A15 Bionic", "6.1\" Super Retina XDR", "12MP dual", STD_STORAGE, COLORS_PASTEL],
+  ["iPhone 13 Pro", 2021, 680000, "A15 Bionic", "6.1\" Super Retina XDR, 120Hz", "12MP triple + LiDAR", PRO_STORAGE, COLORS_PRO],
+  ["iPhone 13 Pro Max", 2021, 750000, "A15 Bionic", "6.7\" Super Retina XDR, 120Hz", "12MP triple + LiDAR", PRO_STORAGE, COLORS_PRO],
+  ["iPhone 14", 2022, 620000, "A15 Bionic", "6.1\" Super Retina XDR", "12MP dual", STD_STORAGE, COLORS_PASTEL],
+  ["iPhone 14 Plus", 2022, 680000, "A15 Bionic", "6.7\" Super Retina XDR", "12MP dual", STD_STORAGE, COLORS_PASTEL],
+  ["iPhone 14 Pro", 2022, 850000, "A16 Bionic", "6.1\" Super Retina XDR, 120Hz", "48MP triple", PRO_STORAGE, COLORS_PRO],
+  ["iPhone 14 Pro Max", 2022, 920000, "A16 Bionic", "6.7\" Super Retina XDR, 120Hz", "48MP triple", PRO_STORAGE, COLORS_PRO],
+  ["iPhone 15", 2023, 780000, "A16 Bionic", "6.1\" Super Retina XDR", "48MP dual", STD_STORAGE, COLORS_PASTEL],
+  ["iPhone 15 Plus", 2023, 850000, "A16 Bionic", "6.7\" Super Retina XDR", "48MP dual", STD_STORAGE, COLORS_PASTEL],
+  ["iPhone 15 Pro", 2023, 1050000, "A17 Pro", "6.1\" Super Retina XDR, 120Hz", "48MP triple", PRO_STORAGE, COLORS_TITANIUM],
+  ["iPhone 15 Pro Max", 2023, 1650000, "A17 Pro", "6.7\" Super Retina XDR, 120Hz", "48MP triple", PRO_STORAGE, COLORS_TITANIUM],
+  ["iPhone 16", 2024, 980000, "A18", "6.1\" Super Retina XDR", "48MP dual", STD_STORAGE, COLORS_PASTEL],
+  ["iPhone 16 Plus", 2024, 1080000, "A18", "6.7\" Super Retina XDR", "48MP dual", STD_STORAGE, COLORS_PASTEL],
+  ["iPhone 16 Pro", 2024, 1350000, "A18 Pro", "6.3\" Super Retina XDR, 120Hz", "48MP triple", PRO_STORAGE, COLORS_TITANIUM],
+  ["iPhone 16 Pro Max", 2024, 1600000, "A18 Pro", "6.9\" Super Retina XDR, 120Hz", "48MP triple", PRO_STORAGE, COLORS_TITANIUM],
+  ["iPhone 17", 2025, 1100000, "A19", "6.3\" Super Retina XDR", "48MP dual", STD_STORAGE, ["Titanium Gray", "Titanium Black"], true],
+  ["iPhone 17 Pro Max", 2025, 1750000, "A19 Pro", "6.9\" Super Retina XDR, 120Hz", "48MP triple", PRO_STORAGE, ["Titanium Gray", "Titanium Black"], true],
+];
+
+const SAMSUNG_COLORS = ["Phantom Black", "Cream", "Titanium Gray"];
+const SAMSUNG = [
+  ["Galaxy S21 Ultra", 2021, 520000, "Snapdragon 888", "6.8\" Dynamic AMOLED, 120Hz", "108MP quad", PRO_STORAGE, SAMSUNG_COLORS],
+  ["Galaxy S22 Ultra", 2022, 680000, "Snapdragon 8 Gen 1", "6.8\" Dynamic AMOLED, 120Hz", "108MP quad + S Pen", PRO_STORAGE, SAMSUNG_COLORS],
+  ["Galaxy S23 Ultra", 2023, 980000, "Snapdragon 8 Gen 2", "6.8\" Dynamic AMOLED, 120Hz", "200MP quad + S Pen", PRO_STORAGE, SAMSUNG_COLORS],
+  ["Galaxy S24 Ultra", 2024, 1420000, "Snapdragon 8 Gen 3", "6.8\" Dynamic AMOLED, 120Hz", "200MP quad + S Pen", PRO_STORAGE, SAMSUNG_COLORS],
+  ["Galaxy S25 Ultra", 2025, 1680000, "Snapdragon 8 Elite", "6.9\" Dynamic AMOLED, 120Hz", "200MP quad + S Pen", PRO_STORAGE, SAMSUNG_COLORS],
+];
+
+// [name, year, price, chip, storageSpec, extra]
+const CONSOLES = [
+  ["PlayStation 3", 2006, 145000, "Cell Broadband Engine", "320GB HDD, Blu-ray Drive", "Backward-compatible with select PS1/PS2 discs"],
+  ["PlayStation 4", 2013, 280000, "AMD Jaguar 8-core", "1TB HDD, Full HD 1080p", "Ships with one DualShock 4 controller"],
+  ["PlayStation 5", 2020, 750000, "AMD Zen 2 8-core", "1TB SSD, 4K up to 120fps", "Ships with one DualSense controller"],
+];
+
+function makePhone(brand, idx, row) {
+  const [name, year, price, chip, display, camera, storages, colors, comingSoon] = row;
+  const stock = comingSoon ? 0 : seededStock(idx, idx % 11 === 0);
+  return {
+    id: `smartphones-${brand.toLowerCase()}-${idx}`,
+    slug: slugify(name),
+    name, brand, categoryId: "smartphones", year, price,
+    storageOptions: storages, colorOptions: colors,
+    rating: seededRating(idx), reviews: seededReviews(idx), stock,
+    isNew: year >= 2024 && !comingSoon, isComingSoon: !!comingSoon,
+    specs: {
+      Display: display, Chip: chip, Camera: camera, Storage: storages.join(" / "),
+      Battery: year >= 2022 ? "Up to 26h video playback" : "Up to 20h video playback",
+      Warranty: comingSoon ? "Available for pre-order" : "12 Months Limited Warranty",
+    },
+    description: `${name} brings ${chip} performance to a ${display.split(",")[0]} display, available from ${storages[0]} up to ${storages[storages.length - 1]}.`,
+  };
+}
+
+function makeConsole(idx, row) {
+  const [name, year, price, chip, storage, extra] = row;
+  return {
+    id: `gaming-${idx}`, slug: slugify(name), name, brand: "Sony", categoryId: "gaming", year, price,
+    storageOptions: [storage.split(",")[0].trim()], colorOptions: ["Jet Black", "White"],
+    rating: seededRating(idx + 5), reviews: seededReviews(idx + 5), stock: seededStock(idx + 30, false),
+    isNew: year >= 2020,
+    specs: { Processor: chip, Storage: storage, Highlight: extra, Warranty: "12 Months Limited Warranty" },
+    description: `${name} — ${extra}.`,
+  };
+}
+
+const ACCESSORIES = [
+  { id: "acc-1", slug: "airpods-pro-2", name: "AirPods Pro 2", brand: "Apple", categoryId: "audio", price: 285000,
+    colorOptions: ["White"], rating: 4.7, reviews: 301, stock: 40, isFeatured: true,
+    specs: { Driver: "Custom high-excursion", "Battery Life": "6h + 24h case", ANC: "Adaptive", Warranty: "12 Months" },
+    description: "Adaptive noise cancelling that resets itself 48 times a second, plus a case you can actually find." },
+  { id: "acc-2", slug: "galaxy-buds-2-pro", name: "Galaxy Buds 2 Pro", brand: "Samsung", categoryId: "audio", price: 165000,
+    colorOptions: ["Graphite", "White", "Bora Purple"], rating: 4.5, reviews: 142, stock: 28,
+    specs: { Driver: "Two-way coaxial", "Battery Life": "5h + 18h case", ANC: "Intelligent ANC", Warranty: "12 Months" },
+    description: "A two-way speaker tuned with Samsung's audio lab, built for all-day wear." },
+  { id: "acc-3", slug: "wireless-earbuds-x200", name: "Wireless Earbuds X200", brand: "Generic", categoryId: "audio", price: 35000,
+    colorOptions: ["Black", "White"], rating: 4.1, reviews: 88, stock: 60,
+    specs: { Driver: "10mm dynamic", "Battery Life": "5h + 20h case", ANC: "Passive isolation", Warranty: "6 Months" },
+    description: "An everyday earbud that covers the basics well, at a price that doesn't sting if it's lost." },
+  { id: "acc-4", slug: "jbl-flip-6", name: "JBL Flip 6 Bluetooth Speaker", brand: "JBL", categoryId: "audio", price: 95000,
+    colorOptions: ["Black", "Blue", "Red", "Camo"], rating: 4.6, reviews: 176, stock: 22,
+    specs: { Output: "30W", "Battery Life": "Up to 12h", "Water Resistance": "IP67", Warranty: "12 Months" },
+    description: "Pool-proof, drop-proof, and loud enough to fill a backyard." },
+  { id: "acc-5", slug: "portable-music-player-classic", name: "Portable Music Player Classic", brand: "Apple", categoryId: "audio", price: 120000,
+    colorOptions: ["Silver", "Space Gray"], rating: 4.4, reviews: 39, stock: 9,
+    specs: { Storage: "128GB", "Battery Life": "Up to 40h audio", Display: "4\" Retina", Warranty: "6 Months" },
+    description: "For the people who still want one device that's just for music." },
+  { id: "acc-6", slug: "apple-watch-series-9", name: "Apple Watch Series 9", brand: "Apple", categoryId: "wearables", price: 580000,
+    colorOptions: ["Midnight", "Starlight", "Pink"], rating: 4.8, reviews: 198, stock: 17, isFeatured: true,
+    specs: { Display: "45mm LTPO OLED", "Battery Life": "Up to 18h", "Water Resistance": "50m", Warranty: "12 Months" },
+    description: "Faster charging, a brighter always-on display, and double-tap gestures built in." },
+  { id: "acc-7", slug: "galaxy-watch-6", name: "Galaxy Watch 6", brand: "Samsung", categoryId: "wearables", price: 410000,
+    colorOptions: ["Graphite", "Silver"], rating: 4.4, reviews: 76, stock: 22,
+    specs: { Display: "44mm AMOLED", "Battery Life": "Up to 40h", "Water Resistance": "5ATM", Warranty: "12 Months" },
+    description: "Sleep coaching, body composition, and a sapphire crystal face that shrugs off scratches." },
+  { id: "acc-8", slug: "apple-20w-usb-c-charger", name: "Apple 20W USB-C Charger", brand: "Apple", categoryId: "power", price: 18000,
+    colorOptions: ["White"], rating: 4.3, reviews: 256, stock: 5,
+    specs: { Output: "20W", Ports: "1x USB-C", "Fast Charging": "PD-enabled", Warranty: "6 Months" },
+    description: "The exact brick Apple ships in the box — now sold the way it should be, on its own." },
+  { id: "acc-9", slug: "anker-65w-gan-charger", name: "Anker 65W GaN Fast Charger", brand: "Anker", categoryId: "power", price: 32000,
+    colorOptions: ["Black", "White"], rating: 4.5, reviews: 410, stock: 80,
+    specs: { Output: "65W max", Ports: "2x USB-C, 1x USB-A", "Fast Charging": "PD 3.0, GaN II", Warranty: "12 Months" },
+    description: "Charges a laptop and two phones at once, in a block smaller than a stack of cards." },
+  { id: "acc-10", slug: "anker-20000mah-power-bank", name: "Anker 20,000mAh Power Bank", brand: "Anker", categoryId: "power", price: 45000,
+    colorOptions: ["Black"], rating: 4.6, reviews: 233, stock: 34,
+    specs: { Capacity: "20,000mAh", Output: "22.5W", Ports: "2x USB-C, 1x USB-A", Warranty: "12 Months" },
+    description: "Three full phone charges in your bag before you need an outlet again." },
+  { id: "acc-11", slug: "premium-silicone-case", name: "Premium Silicone Phone Case", brand: "Generic", categoryId: "accessories", price: 12000,
+    colorOptions: ["Black", "Brown", "Cream", "Red"], rating: 4.2, reviews: 95, stock: 120,
+    specs: { Material: "Liquid silicone", Lining: "Microfiber interior", Compatibility: "MagSafe-ready", Warranty: "3 Months" },
+    description: "A soft-touch case that doesn't add bulk and grips like it should." },
+  { id: "acc-12", slug: "tempered-glass-screen-protector", name: "Tempered Glass Screen Protector", brand: "Generic", categoryId: "accessories", price: 5000,
+    colorOptions: ["Clear"], rating: 4.0, reviews: 64, stock: 200,
+    specs: { Hardness: "9H", Thickness: "0.3mm", Coating: "Oleophobic", Warranty: "Cracked-screen replacement, 1x" },
+    description: "Edge-to-edge clarity with a coating that resists fingerprints." },
+  { id: "acc-13", slug: "usb-c-to-usb-c-cable-2m", name: "USB-C to USB-C Cable (2m)", brand: "Anker", categoryId: "accessories", price: 8000,
+    colorOptions: ["Black", "White"], rating: 4.5, reviews: 140, stock: 90,
+    specs: { Length: "2 meters", "Max Speed": "60W PD / 480Mbps", Braided: "Yes", Warranty: "18 Months" },
+    description: "Long enough to charge from the other side of the couch." },
+  { id: "acc-14", slug: "lightning-to-usb-cable-1m", name: "Lightning to USB Cable (1m)", brand: "Apple", categoryId: "accessories", price: 9500,
+    colorOptions: ["White"], rating: 4.4, reviews: 312, stock: 75,
+    specs: { Length: "1 meter", Certification: "MFi Certified", Warranty: "6 Months" },
+    description: "The original cable, sold separately for the one that always goes missing." },
+  { id: "acc-15", slug: "logitech-k380-keyboard", name: "Logitech K380 Keyboard", brand: "Logitech", categoryId: "computer-accessories", price: 75000,
+    colorOptions: ["Black", "Rose"], rating: 4.7, reviews: 121, stock: 26,
+    specs: { Connectivity: "Bluetooth multi-device", "Battery Life": "Up to 2 years", Layout: "Compact", Warranty: "12 Months" },
+    description: "Pairs with up to three devices and switches between them with one key." },
+  { id: "acc-16", slug: "logitech-mx-wireless-mouse", name: "Logitech MX Wireless Mouse", brand: "Logitech", categoryId: "computer-accessories", price: 68000,
+    colorOptions: ["Graphite"], rating: 4.8, reviews: 154, stock: 31,
+    specs: { Sensor: "4000 DPI laser", "Battery Life": "Up to 70 days", Connectivity: "Bluetooth / USB receiver", Warranty: "12 Months" },
+    description: "The mouse that made ergonomic precision feel like a luxury, not a compromise." },
+];
+
+const PRODUCTS = [
+  ...IPHONES.map((row, i) => makePhone("Apple", i, row)),
+  ...SAMSUNG.map((row, i) => makePhone("Samsung", i + 100, row)),
+  ...CONSOLES.map((row, i) => makeConsole(i + 200, row)),
+  ...ACCESSORIES,
+].map((p) => ({ isActive: true, isFeatured: false, isNew: false, isComingSoon: false, ...p }));
+
+const BRANDS = [...new Set(PRODUCTS.map((p) => p.brand))];
+const ALL_STORAGES = [...new Set(PRODUCTS.flatMap((p) => p.storageOptions || []))];
+const ALL_COLORS = [...new Set(PRODUCTS.flatMap((p) => p.colorOptions || []))];
+
+const FEATURED_IDS = ["smartphones-apple-21", "smartphones-apple-26", "acc-1", "acc-6", "gaming-202", "smartphones-samsung-103"];
+
+const REVIEWS_SAMPLE = [
+  { name: "Adaeze O.", rating: 5, comment: "Came exactly as described — sealed box, working FaceID, no issues at all." },
+  { name: "Tunde K.", rating: 5, comment: "Best price I found anywhere in Lagos for this exact storage and colour." },
+  { name: "Ifeoma B.", rating: 4, comment: "Delivery took two days but support kept me updated the whole time." },
+];
+
+/* ---------------------------------------------------------------------- */
+/*  SHARED UI                                                              */
+/* ---------------------------------------------------------------------- */
+function Stars({ value, size = 14 }) {
+  return (
+    <div className="flex items-center gap-0.5">
+      {[1, 2, 3, 4, 5].map((i) => (
+        <Star key={i} size={size} style={{ color: C.brown }} fill={i <= Math.round(value) ? C.brown : "none"} strokeWidth={1.5} />
+      ))}
+    </div>
+  );
+}
+
+function Button({ children, onClick, variant = "solid", className = "", icon: Icon, type = "button", disabled, fullWidth }) {
+  const base = "inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold rounded-2xl transition-all duration-300";
+  const style =
+    variant === "solid"
+      ? { background: `linear-gradient(135deg, ${C.brownLight}, ${C.brown} 70%, ${C.brownDark})`, color: "#fff", boxShadow: "0 8px 20px rgba(107,66,38,0.25)" }
+      : variant === "outline"
+      ? { border: `1.5px solid ${C.brown}`, color: C.brown, background: "transparent" }
+      : variant === "ghost"
+      ? { color: C.brown, background: C.surfaceAlt }
+      : { color: C.text, background: "transparent" };
+  return (
+    <button
+      type={type}
+      disabled={disabled}
+      onClick={onClick}
+      className={base + (fullWidth ? " w-full" : "") + (disabled ? " opacity-40" : " hover:scale-[1.02] active:scale-[0.98]") + " " + className}
+      style={style}
+    >
+      {Icon && <Icon size={16} />}
+      {children}
+    </button>
+  );
+}
+
+function Badge({ children, tone = "brown" }) {
+  const tones = {
+    brown: { background: C.brown, color: "#fff" },
+    danger: { background: C.danger, color: "#fff" },
+    success: { border: `1px solid ${C.success}`, color: C.success, background: "#fff" },
+    warning: { border: `1px solid ${C.warning}`, color: C.warning, background: "#fff" },
+  };
+  return (
+    <span className="text-[10px] uppercase tracking-wider px-2 py-1 font-bold rounded-full" style={tones[tone]}>
+      {children}
+    </span>
+  );
+}
+
+function SectionHeading({ eyebrow, title, sub }) {
+  return (
+    <div className="mb-8 md:mb-10">
+      {eyebrow && (
+        <div className="text-xs uppercase tracking-[0.2em] mb-2 font-semibold" style={{ color: C.brownLight }}>{eyebrow}</div>
+      )}
+      <h2 className="text-2xl md:text-4xl font-semibold" style={{ fontFamily: FONT_DISPLAY, color: C.text }}>{title}</h2>
+      {sub && <p className="mt-2 max-w-xl text-sm md:text-base" style={{ color: C.muted }}>{sub}</p>}
+    </div>
+  );
+}
+
+function Input({ label, ...props }) {
+  return (
+    <label className="block">
+      <span className="block text-xs mb-1.5" style={{ color: C.muted }}>{label}{props.required && " *"}</span>
+      <input
+        {...props}
+        className="w-full px-4 py-3 text-sm outline-none rounded-xl transition-colors"
+        style={{ background: C.surfaceAlt, border: `1px solid ${C.border}`, color: C.text }}
+      />
+    </label>
+  );
+}
+
+/* ---------------------------------------------------------------------- */
+/*  PRODUCT ART — "Display Pedestal"                                       */
+/* ---------------------------------------------------------------------- */
+function ProductArt({ product, big = false, zoom = false }) {
+  const cat = CATEGORIES.find((c) => c.id === product.categoryId);
+  const Icon = cat ? cat.icon : Smartphone;
+  const outOfStock = product.stock === 0 && !product.isComingSoon;
+  return (
+    <div
+      className="relative w-full flex items-center justify-center overflow-hidden rounded-2xl"
+      style={{ aspectRatio: "1 / 1", background: `radial-gradient(circle at 50% 35%, ${C.surfaceAlt} 0%, #EFE2D2 60%, #E6D5BE 100%)`, border: `1px solid ${C.border}` }}
+    >
+      <div className="absolute rounded-full" style={{ width: big ? 220 : 130, height: big ? 220 : 130, border: `1px solid ${C.brownLight}55`, boxShadow: `0 0 50px ${C.brownLight}33` }} />
+      <Icon
+        size={big ? 110 : 60}
+        strokeWidth={1.1}
+        className={zoom ? "transition-transform duration-500 group-hover:scale-110" : ""}
+        style={{ color: C.brown }}
+      />
+      <div className="absolute top-3 left-3 flex flex-col gap-1.5">
+        {product.isNew && <Badge tone="brown">New</Badge>}
+        {product.isComingSoon && <Badge tone="warning">Coming Soon</Badge>}
+      </div>
+      {outOfStock && (
+        <div className="absolute inset-0 flex items-center justify-center" style={{ background: "rgba(43,27,18,0.55)" }}>
+          <span className="text-xs uppercase tracking-wider font-bold px-3 py-1.5 rounded-full" style={{ background: "#fff", color: C.danger }}>
+            Out of Stock
+          </span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------------------- */
+/*  PRODUCT CARD                                                           */
+/* ---------------------------------------------------------------------- */
+function ProductCard({ product, onView, onAdd, wishlist, toggleWishlist }) {
+  const isWished = wishlist.has(product.id);
+  const unavailable = product.stock === 0;
+  return (
+    <div className="group flex flex-col cursor-pointer rounded-2xl overflow-hidden transition-transform hover:-translate-y-1"
+      style={{ background: C.surface, border: `1px solid ${C.border}`, boxShadow: "0 4px 16px rgba(107,66,38,0.06)" }}
+      onClick={() => onView(product.id)}
+    >
+      <div className="relative p-3">
+        <ProductArt product={product} zoom />
+        <button onClick={(e) => { e.stopPropagation(); toggleWishlist(product.id); }} className="absolute bottom-5 right-5 p-2 rounded-full" style={{ background: "#fff", border: `1px solid ${C.border}` }}>
+          <Heart size={15} style={{ color: isWished ? C.brown : C.muted }} fill={isWished ? C.brown : "none"} />
+        </button>
+      </div>
+      <div className="px-4 pb-4 flex flex-col gap-1 flex-1">
+        <span className="text-[11px] uppercase tracking-wider" style={{ color: C.muted }}>{product.brand}</span>
+        <h3 className="text-sm font-medium leading-snug" style={{ color: C.text }}>{product.name}</h3>
+        <div className="flex items-center gap-2 mt-1">
+          <Stars value={product.rating} />
+          <span className="text-xs" style={{ color: C.muted }}>({product.reviews})</span>
+        </div>
+        <div className="mt-1 text-base font-bold" style={{ color: C.brown }}>{naira(product.price)}</div>
+        <button
+          disabled={unavailable}
+          onClick={(e) => { e.stopPropagation(); onAdd(product.id); }}
+          className="mt-3 w-full text-xs uppercase tracking-wider font-semibold py-2.5 rounded-xl transition-colors"
+          style={unavailable ? { background: C.surfaceAlt, color: C.muted } : { border: `1.5px solid ${C.brown}`, color: C.brown, background: "transparent" }}
+        >
+          {unavailable ? (product.isComingSoon ? "Coming Soon" : "Out of Stock") : "Add to Cart"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------------------- */
+/*  LOGO                                                                   */
+/* ---------------------------------------------------------------------- */
+function Logo({ onClick, light = false }) {
+  return (
+    <div onClick={onClick} className="flex items-center gap-2 cursor-pointer select-none">
+      <div className="w-9 h-9 flex items-center justify-center rounded-xl" style={{ background: light ? "rgba(255,255,255,0.15)" : C.brown }}>
+        <Plug size={18} color="#fff" />
+      </div>
+      <span style={{ fontFamily: FONT_DISPLAY, color: light ? "#fff" : C.text }} className="text-lg tracking-wide">
+        Young Plug <span style={{ color: light ? C.brownLight : C.brown }}>Gadgets</span>
+      </span>
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------------------- */
+/*  WELCOME PAGE                                                           */
+/* ---------------------------------------------------------------------- */
+function WelcomePage({ setView }) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { const t = setTimeout(() => setMounted(true), 120); return () => clearTimeout(t); }, []);
+  const fade = (delay) => ({
+    opacity: mounted ? 1 : 0,
+    transform: mounted ? "translateY(0)" : "translateY(18px)",
+    transition: `all .7s cubic-bezier(.22,1,.36,1) ${delay}ms`,
+  });
+  return (
+    <div className="relative w-full min-h-screen flex flex-col justify-end overflow-hidden" style={{ background: C.brownDark }}>
+      <img src={HERO_IMAGE} alt="" className="absolute inset-0 w-full h-full object-cover" style={{ opacity: mounted ? 1 : 0, transition: "opacity 1.2s ease" }} />
+      <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(63,42,28,0.05) 0%, rgba(63,42,28,0.35) 45%, rgba(63,42,28,0.94) 85%)" }} />
+      <div className="relative z-10 px-6 pb-12 pt-10 flex flex-col items-center text-center">
+        <div style={fade(0)}>
+          <div className="w-16 h-16 mx-auto flex items-center justify-center rounded-2xl mb-5" style={{ background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.25)" }}>
+            <Plug size={28} color="#fff" />
+          </div>
+        </div>
+        <h1 style={{ ...fade(120), fontFamily: FONT_DISPLAY, color: "#fff" }} className="text-3xl md:text-5xl font-semibold tracking-tight">
+          Young Plug Gadgets
+        </h1>
+        <p style={{ ...fade(220), color: "#EAD9C4", fontStyle: "italic" }} className="mt-3 text-base md:text-lg max-w-sm">
+          Plug into premium. Genuine devices, honest prices.
+        </p>
+        <div style={fade(340)} className="mt-8 w-full max-w-xs flex flex-col gap-3">
+          <Button fullWidth onClick={() => setView("login")} icon={ArrowRight}>Login</Button>
+          <button
+            onClick={() => setView("signup")}
+            className="w-full py-3 text-sm font-semibold rounded-2xl transition-transform hover:scale-[1.02]"
+            style={{ background: "rgba(255,255,255,0.95)", color: C.brownDark }}
+          >
+            Create Account
+          </button>
+          <button onClick={() => setView("home")} className="w-full py-2 text-sm font-medium" style={{ color: "#EAD9C4" }}>
+            Continue as Guest
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------------------- */
+/*  LOGIN / SIGNUP                                                         */
+/* ---------------------------------------------------------------------- */
+function AuthShell({ title, sub, children, setView, backTo = "welcome" }) {
+  return (
+    <div className="min-h-screen flex items-center justify-center px-6" style={{ background: C.bg }}>
+      <div className="w-full max-w-sm">
+        <button onClick={() => setView(backTo)} className="flex items-center gap-1 text-sm mb-6" style={{ color: C.muted }}>
+          <ArrowLeft size={15} /> Back
+        </button>
+        <Logo onClick={() => setView("welcome")} />
+        <h2 className="mt-8 text-2xl font-semibold" style={{ fontFamily: FONT_DISPLAY, color: C.text }}>{title}</h2>
+        <p className="mt-1 text-sm" style={{ color: C.muted }}>{sub}</p>
+        <div className="mt-6">{children}</div>
+      </div>
+    </div>
+  );
+}
+
+function LoginPage({ setView, onAuth }) {
+  const [showPw, setShowPw] = useState(false);
+  const [form, setForm] = useState({ email: "", password: "" });
+  return (
+    <AuthShell title="Welcome back" sub="Log in to track orders and pick up your wishlist." setView={setView}>
+      <form onSubmit={(e) => { e.preventDefault(); onAuth({ name: form.email.split("@")[0] || "Customer", email: form.email }); }} className="space-y-4">
+        <Input label="Email Address" type="email" required value={form.email} onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))} />
+        <div className="relative">
+          <Input label="Password" type={showPw ? "text" : "password"} required value={form.password} onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))} />
+          <button type="button" onClick={() => setShowPw((s) => !s)} className="absolute right-3 top-9" style={{ color: C.muted }}>
+            {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
+          </button>
+        </div>
+        <Button type="submit" fullWidth>Log In</Button>
+        <p className="text-center text-xs" style={{ color: C.muted }}>
+          New here? <button type="button" onClick={() => setView("signup")} className="font-semibold" style={{ color: C.brown }}>Create an account</button>
+        </p>
+      </form>
+    </AuthShell>
+  );
+}
+
+function SignupPage({ setView, onAuth }) {
+  const [form, setForm] = useState({ name: "", email: "", password: "" });
+  return (
+    <AuthShell title="Create your account" sub="Takes less than a minute." setView={setView}>
+      <form onSubmit={(e) => { e.preventDefault(); onAuth({ name: form.name || "Customer", email: form.email }); }} className="space-y-4">
+        <Input label="Full Name" required value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} />
+        <Input label="Email Address" type="email" required value={form.email} onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))} />
+        <Input label="Password" type="password" required value={form.password} onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))} />
+        <Button type="submit" fullWidth>Create Account</Button>
+        <p className="text-center text-xs" style={{ color: C.muted }}>
+          Already have an account? <button type="button" onClick={() => setView("login")} className="font-semibold" style={{ color: C.brown }}>Log in</button>
+        </p>
+      </form>
+    </AuthShell>
+  );
+}
+
+/* ---------------------------------------------------------------------- */
+/*  ADMIN LOGIN (separate, not linked from Welcome)                        */
+/* ---------------------------------------------------------------------- */
+function AdminLoginPage({ setView, onAdminAuth }) {
+  const [form, setForm] = useState({ email: "", password: "" });
+  return (
+    <div className="min-h-screen flex items-center justify-center px-6" style={{ background: C.brownDark }}>
+      <div className="w-full max-w-sm p-8 rounded-2xl" style={{ background: C.surface }}>
+        <div className="flex items-center gap-2 mb-2">
+          <Lock size={18} style={{ color: C.brown }} />
+          <span className="text-xs uppercase tracking-wider font-semibold" style={{ color: C.brown }}>Restricted Access</span>
+        </div>
+        <h2 className="text-xl font-semibold" style={{ fontFamily: FONT_DISPLAY, color: C.text }}>Admin Login</h2>
+        <p className="mt-1 text-sm" style={{ color: C.muted }}>This area is for Young Plug Gadgets staff only.</p>
+        <form onSubmit={(e) => { e.preventDefault(); onAdminAuth(); }} className="mt-6 space-y-4">
+          <Input label="Admin Email" type="email" required value={form.email} onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))} />
+          <Input label="Password" type="password" required value={form.password} onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))} />
+          <Button type="submit" fullWidth>Access Dashboard</Button>
+        </form>
+        <button onClick={() => setView("home")} className="mt-5 text-xs w-full text-center" style={{ color: C.muted }}>← Back to storefront</button>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------------------- */
+/*  NAVBAR / FOOTER / WHATSAPP                                             */
+/* ---------------------------------------------------------------------- */
+function Navbar({ view, setView, cartCount, wishCount, search, setSearch, currentUser }) {
+  const [open, setOpen] = useState(false);
+  const links = [{ id: "home", label: "Home" }, { id: "shop", label: "Shop" }, { id: "request", label: "Request a Device" }];
+  return (
+    <header className="sticky top-0 z-50" style={{ background: "rgba(250,246,241,0.95)", borderBottom: `1px solid ${C.border}`, backdropFilter: "blur(8px)" }}>
+      <div className="max-w-7xl mx-auto px-4 md:px-8 h-16 flex items-center justify-between gap-4">
+        <Logo onClick={() => setView("home")} />
+        <nav className="hidden lg:flex items-center gap-8">
+          {links.map((l) => (
+            <button key={l.id} onClick={() => setView(l.id)} className="text-sm font-medium" style={{ color: view === l.id ? C.brown : C.text }}>{l.label}</button>
+          ))}
+        </nav>
+        <div className="hidden md:flex items-center flex-1 max-w-xs ml-4">
+          <div className="flex items-center w-full px-3 py-2 gap-2 rounded-xl" style={{ background: C.surfaceAlt, border: `1px solid ${C.border}` }}>
+            <Search size={15} style={{ color: C.muted }} />
+            <input value={search} onChange={(e) => { setSearch(e.target.value); setView("shop"); }} placeholder="Search gadgets..." className="bg-transparent outline-none text-sm w-full" style={{ color: C.text }} />
+          </div>
+        </div>
+        <div className="flex items-center gap-4">
+          <button onClick={() => setView("wishlist")} className="relative" aria-label="Wishlist">
+            <Heart size={20} style={{ color: C.text }} />
+            {wishCount > 0 && <span className="absolute -top-2 -right-2 text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold" style={{ background: C.brown, color: "#fff" }}>{wishCount}</span>}
+          </button>
+          <button onClick={() => setView("orders")} aria-label="Orders"><Package size={20} style={{ color: C.text }} /></button>
+          <button onClick={() => setView("cart")} className="relative" aria-label="Cart">
+            <ShoppingCart size={20} style={{ color: C.text }} />
+            {cartCount > 0 && <span className="absolute -top-2 -right-2 text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold" style={{ background: C.brown, color: "#fff" }}>{cartCount}</span>}
+          </button>
+          <button className="lg:hidden" onClick={() => setOpen(true)}><Menu size={22} style={{ color: C.text }} /></button>
+        </div>
+      </div>
+      {open && (
+        <div className="fixed inset-0 z-50" style={{ background: "#fff" }}>
+          <div className="flex justify-between items-center p-5">
+            <Logo />
+            <button onClick={() => setOpen(false)}><X size={24} style={{ color: C.brown }} /></button>
+          </div>
+          <div className="flex flex-col items-center gap-7 mt-10">
+            {[...links, { id: "cart", label: "Cart" }, { id: "wishlist", label: "Wishlist" }, { id: "orders", label: "My Orders" }].map((l) => (
+              <button key={l.id} onClick={() => { setView(l.id); setOpen(false); }} className="text-xl font-medium" style={{ fontFamily: FONT_DISPLAY, color: C.text }}>{l.label}</button>
+            ))}
+          </div>
+        </div>
+      )}
+    </header>
+  );
+}
+
+function Footer({ setView }) {
+  return (
+    <footer style={{ background: C.surfaceAlt, borderTop: `1px solid ${C.border}` }}>
+      <div className="max-w-7xl mx-auto px-4 md:px-8 py-12 grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div className="col-span-2">
+          <Logo onClick={() => setView("home")} />
+          <p className="mt-3 text-sm max-w-xs" style={{ color: C.muted }}>Premium gadgets, sourced authentic and delivered across Nigeria.</p>
+        </div>
+        <div>
+          <h4 className="text-xs uppercase tracking-wider mb-3" style={{ color: C.brown }}>Shop</h4>
+          {["Smartphones", "Gaming Consoles", "Earbuds & Audio"].map((l) => (
+            <div key={l} onClick={() => setView("shop")} className="text-sm mb-2 cursor-pointer" style={{ color: C.muted }}>{l}</div>
+          ))}
+        </div>
+        <div>
+          <h4 className="text-xs uppercase tracking-wider mb-3" style={{ color: C.brown }}>Support</h4>
+          <div onClick={() => setView("request")} className="text-sm mb-2 cursor-pointer" style={{ color: C.muted }}>Request a Device</div>
+          <div onClick={() => setView("orders")} className="text-sm mb-2 cursor-pointer" style={{ color: C.muted }}>Order Tracking</div>
+          <div onClick={() => setView("adminLogin")} className="text-sm mb-2 cursor-pointer" style={{ color: C.muted }}>Admin Access</div>
+        </div>
+      </div>
+      <div className="text-center text-xs py-5" style={{ color: C.muted, borderTop: `1px solid ${C.border}` }}>© 2026 Young Plug Gadgets. All rights reserved.</div>
+    </footer>
+  );
+}
+
+function WhatsAppButton() {
+  return (
+    <a href="#" onClick={(e) => e.preventDefault()} className="fixed bottom-5 right-5 z-40 w-14 h-14 rounded-full flex items-center justify-center" style={{ background: "#25D366", boxShadow: "0 6px 20px rgba(0,0,0,0.3)" }}>
+      <MessageCircle size={26} color="#fff" fill="#fff" />
+    </a>
+  );
+}
+
+
+/* ---------------------------------------------------------------------- */
+/*  HOME PAGE                                                              */
+/* ---------------------------------------------------------------------- */
+function HomePage({ setView, viewProduct, addToCart, wishlist, toggleWishlist }) {
+  const featured = PRODUCTS.filter((p) => FEATURED_IDS.includes(p.id));
+  const newest = [...PRODUCTS].filter((p) => p.isNew).slice(0, 8);
+  return (
+    <>
+      <section className="relative overflow-hidden" style={{ background: `linear-gradient(180deg, ${C.surfaceAlt} 0%, ${C.bg} 70%)` }}>
+        <div className="max-w-7xl mx-auto px-4 md:px-8 pt-12 pb-10 md:pt-20 md:pb-16 grid md:grid-cols-2 gap-10 items-center">
+          <div>
+            <div className="flex items-center gap-2 mb-4 text-xs uppercase tracking-[0.2em] font-semibold" style={{ color: C.brownLight }}>
+              <span className="w-8 h-px" style={{ background: C.brown }} /> Genuine. Premium. Verified.
+            </div>
+            <h1 className="text-4xl md:text-6xl leading-[1.05] font-semibold" style={{ fontFamily: FONT_DISPLAY, color: C.text }}>
+              Plug into <span style={{ color: C.brown }}>premium tech.</span>
+            </h1>
+            <p className="mt-5 text-base md:text-lg max-w-md" style={{ color: C.muted }}>
+              From iPhone XR to iPhone 17 Pro Max, PlayStation classics to the latest accessories — all genuine, all in stock.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-4">
+              <Button onClick={() => setView("shop")} icon={ArrowRight}>Shop Now</Button>
+              <Button variant="outline" onClick={() => setView("request")}>Request a Device</Button>
+            </div>
+          </div>
+          <div className="flex justify-center max-w-xs mx-auto md:max-w-sm">
+            <ProductArt product={featured[0]} big zoom />
+          </div>
+        </div>
+      </section>
+
+      <section className="max-w-7xl mx-auto px-4 md:px-8 py-14">
+        <SectionHeading eyebrow="Browse" title="Shop by Category" />
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3">
+          {CATEGORIES.map((c) => (
+            <button key={c.id} onClick={() => setView("shop", c.id)} className="flex flex-col items-center justify-center gap-3 py-7 px-2 rounded-2xl transition-transform hover:-translate-y-1"
+              style={{ background: C.surface, border: `1px solid ${C.border}` }}>
+              <c.icon size={26} strokeWidth={1.3} style={{ color: C.brown }} />
+              <span className="text-xs text-center font-medium" style={{ color: C.text }}>{c.name}</span>
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <section className="max-w-7xl mx-auto px-4 md:px-8 py-12">
+        <SectionHeading eyebrow="Curated" title="Featured Products" sub="Staff picks across phones, gaming and audio." />
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+          {featured.map((p) => <ProductCard key={p.id} product={p} onView={viewProduct} onAdd={addToCart} wishlist={wishlist} toggleWishlist={toggleWishlist} />)}
+        </div>
+      </section>
+
+      <section className="max-w-7xl mx-auto px-4 md:px-8 py-12">
+        <SectionHeading eyebrow="Just In" title="Latest Arrivals" sub="The newest releases across every category." />
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+          {newest.map((p) => <ProductCard key={p.id} product={p} onView={viewProduct} onAdd={addToCart} wishlist={wishlist} toggleWishlist={toggleWishlist} />)}
+        </div>
+      </section>
+
+      <section className="py-16" style={{ background: C.surfaceAlt }}>
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <SectionHeading eyebrow="Why Young Plug" title="Built for trust, not just transactions." />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { icon: ShieldCheck, title: "100% Genuine", text: "Every device verified before it leaves our warehouse." },
+              { icon: Truck, title: "Fast Delivery", text: "Same-day in Lagos, 24–72h nationwide." },
+              { icon: RotateCcw, title: "7-Day Returns", text: "Changed your mind? We make it painless." },
+              { icon: MessageCircle, title: "Real Support", text: "A human replies on WhatsApp, not a bot." },
+            ].map((it) => (
+              <div key={it.title} className="p-6 rounded-2xl" style={{ background: C.surface, border: `1px solid ${C.border}` }}>
+                <it.icon size={26} strokeWidth={1.3} style={{ color: C.brown }} />
+                <h3 className="mt-4 font-semibold" style={{ fontFamily: FONT_DISPLAY, color: C.text }}>{it.title}</h3>
+                <p className="mt-2 text-sm" style={{ color: C.muted }}>{it.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="max-w-7xl mx-auto px-4 md:px-8 py-16">
+        <SectionHeading eyebrow="Word on the street" title="What customers are saying" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {REVIEWS_SAMPLE.map((t) => (
+            <div key={t.name} className="p-6 rounded-2xl" style={{ background: C.surface, border: `1px solid ${C.border}` }}>
+              <Stars value={t.rating} />
+              <p className="mt-3 text-sm" style={{ color: C.text }}>{t.comment}</p>
+              <div className="mt-4 text-sm font-semibold" style={{ color: C.text }}>{t.name}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="py-16" style={{ background: `linear-gradient(135deg, ${C.surfaceAlt}, ${C.bg})` }}>
+        <div className="max-w-2xl mx-auto px-4 text-center">
+          <h2 className="text-2xl md:text-3xl font-semibold" style={{ fontFamily: FONT_DISPLAY, color: C.text }}>
+            Get early access to <span style={{ color: C.brown }}>restocks &amp; promos</span>
+          </h2>
+          <form onSubmit={(e) => e.preventDefault()} className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+            <input placeholder="you@email.com" className="px-4 py-3 text-sm outline-none rounded-xl w-full sm:w-72" style={{ background: C.surface, border: `1px solid ${C.border}`, color: C.text }} />
+            <Button icon={Send}>Subscribe</Button>
+          </form>
+        </div>
+      </section>
+
+      <section className="max-w-7xl mx-auto px-4 md:px-8 py-16 grid md:grid-cols-3 gap-6">
+        {[{ icon: Phone, label: "Call or WhatsApp", value: "+234 800 123 4567" }, { icon: Mail, label: "Email", value: "hello@youngpluggadgets.com" }, { icon: MapPin, label: "Showroom", value: "12 Allen Avenue, Ikeja, Lagos" }].map((c) => (
+          <div key={c.label} className="p-6 flex items-start gap-4 rounded-2xl" style={{ background: C.surface, border: `1px solid ${C.border}` }}>
+            <c.icon size={20} style={{ color: C.brown }} />
+            <div>
+              <div className="text-xs uppercase tracking-wider" style={{ color: C.muted }}>{c.label}</div>
+              <div className="mt-1 text-sm" style={{ color: C.text }}>{c.value}</div>
+            </div>
+          </div>
+        ))}
+      </section>
+    </>
+  );
+}
+
+/* ---------------------------------------------------------------------- */
+/*  SHOP PAGE                                                              */
+/* ---------------------------------------------------------------------- */
+function ShopPage({ initialCategory, viewProduct, addToCart, wishlist, toggleWishlist, searchTerm }) {
+  const [category, setCategory] = useState(initialCategory || null);
+  const [brand, setBrand] = useState(new Set());
+  const [storage, setStorage] = useState(new Set());
+  const [color, setColor] = useState(new Set());
+  const [maxPrice, setMaxPrice] = useState(2000000);
+  const [sort, setSort] = useState("popularity");
+  const [search, setSearch] = useState(searchTerm || "");
+  const [filtersOpen, setFiltersOpen] = useState(false);
+
+  const toggleSet = (setter) => (val) => setter((prev) => { const n = new Set(prev); n.has(val) ? n.delete(val) : n.add(val); return n; });
+
+  const filtered = useMemo(() => {
+    let list = PRODUCTS.filter((p) => p.price <= maxPrice);
+    if (category) list = list.filter((p) => p.categoryId === category);
+    if (brand.size) list = list.filter((p) => brand.has(p.brand));
+    if (storage.size) list = list.filter((p) => (p.storageOptions || []).some((s) => storage.has(s)));
+    if (color.size) list = list.filter((p) => (p.colorOptions || []).some((c) => color.has(c)));
+    if (search) { const q = search.toLowerCase(); list = list.filter((p) => p.name.toLowerCase().includes(q) || p.brand.toLowerCase().includes(q)); }
+    const sorted = [...list];
+    if (sort === "price-asc") sorted.sort((a, b) => a.price - b.price);
+    if (sort === "price-desc") sorted.sort((a, b) => b.price - a.price);
+    if (sort === "newest") sorted.sort((a, b) => (b.year || 0) - (a.year || 0));
+    if (sort === "popularity") sorted.sort((a, b) => b.reviews - a.reviews);
+    return sorted;
+  }, [category, brand, storage, color, maxPrice, search, sort]);
+
+  const FiltersPanel = () => (
+    <div className="space-y-7">
+      <div>
+        <h4 className="text-xs uppercase tracking-wider mb-3" style={{ color: C.brown }}>Category</h4>
+        <div className="space-y-2">
+          <button onClick={() => setCategory(null)} className="text-sm block" style={{ color: !category ? C.brown : C.muted }}>All Categories</button>
+          {CATEGORIES.map((c) => <button key={c.id} onClick={() => setCategory(c.id)} className="text-sm block" style={{ color: category === c.id ? C.brown : C.muted }}>{c.name}</button>)}
+        </div>
+      </div>
+      <div>
+        <h4 className="text-xs uppercase tracking-wider mb-3" style={{ color: C.brown }}>Brand</h4>
+        <div className="space-y-2 max-h-32 overflow-y-auto pr-1">
+          {BRANDS.map((b) => (
+            <label key={b} className="flex items-center gap-2 text-sm cursor-pointer" style={{ color: C.muted }}>
+              <input type="checkbox" checked={brand.has(b)} onChange={() => toggleSet(setBrand)(b)} /> {b}
+            </label>
+          ))}
+        </div>
+      </div>
+      <div>
+        <h4 className="text-xs uppercase tracking-wider mb-3" style={{ color: C.brown }}>Storage</h4>
+        <div className="flex flex-wrap gap-2">
+          {ALL_STORAGES.map((s) => (
+            <button key={s} onClick={() => toggleSet(setStorage)(s)} className="text-xs px-3 py-1.5 rounded-full" style={storage.has(s) ? { background: C.brown, color: "#fff" } : { border: `1px solid ${C.border}`, color: C.muted }}>{s}</button>
+          ))}
+        </div>
+      </div>
+      <div>
+        <h4 className="text-xs uppercase tracking-wider mb-3" style={{ color: C.brown }}>Colour</h4>
+        <div className="flex flex-wrap gap-2">
+          {ALL_COLORS.slice(0, 14).map((c) => (
+            <button key={c} onClick={() => toggleSet(setColor)(c)} className="text-xs px-3 py-1.5 rounded-full" style={color.has(c) ? { background: C.brown, color: "#fff" } : { border: `1px solid ${C.border}`, color: C.muted }}>{c}</button>
+          ))}
+        </div>
+      </div>
+      <div>
+        <h4 className="text-xs uppercase tracking-wider mb-3" style={{ color: C.brown }}>Max Price: {naira(maxPrice)}</h4>
+        <input type="range" min={5000} max={2000000} step={5000} value={maxPrice} onChange={(e) => setMaxPrice(Number(e.target.value))} className="w-full" />
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 md:px-8 py-10">
+      <SectionHeading eyebrow="Catalog" title="Shop All Gadgets" sub={`${filtered.length} products found`} />
+      <div className="flex flex-col md:flex-row gap-8">
+        <aside className="hidden md:block w-64 shrink-0"><FiltersPanel /></aside>
+        <div className="flex-1">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="flex items-center flex-1 px-3 py-2.5 gap-2 rounded-xl" style={{ background: C.surfaceAlt, border: `1px solid ${C.border}` }}>
+              <Search size={15} style={{ color: C.muted }} />
+              <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search products..." className="bg-transparent outline-none text-sm w-full" style={{ color: C.text }} />
+            </div>
+            <button onClick={() => setFiltersOpen(true)} className="md:hidden p-2.5 rounded-xl" style={{ border: `1px solid ${C.border}` }}><SlidersHorizontal size={16} style={{ color: C.brown }} /></button>
+            <select value={sort} onChange={(e) => setSort(e.target.value)} className="px-3 py-2.5 text-sm outline-none rounded-xl" style={{ background: C.surfaceAlt, border: `1px solid ${C.border}`, color: C.text }}>
+              <option value="popularity">Popularity</option>
+              <option value="newest">Newest</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+            </select>
+          </div>
+          {filtered.length === 0 ? (
+            <div className="py-20 text-center" style={{ color: C.muted }}>No products match those filters.</div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+              {filtered.map((p) => <ProductCard key={p.id} product={p} onView={viewProduct} onAdd={addToCart} wishlist={wishlist} toggleWishlist={toggleWishlist} />)}
+            </div>
+          )}
+        </div>
+      </div>
+      {filtersOpen && (
+        <div className="fixed inset-0 z-50 flex" style={{ background: "rgba(43,27,18,0.6)" }}>
+          <div className="w-80 p-6 ml-auto h-full overflow-y-auto" style={{ background: C.bg }}>
+            <div className="flex justify-between items-center mb-6">
+              <span className="text-sm uppercase tracking-wider" style={{ color: C.brown }}>Filters</span>
+              <button onClick={() => setFiltersOpen(false)}><X size={20} style={{ color: C.text }} /></button>
+            </div>
+            <FiltersPanel />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------------------- */
+/*  PRODUCT DETAILS PAGE                                                   */
+/* ---------------------------------------------------------------------- */
+function ProductPage({ productId, viewProduct, addToCart, onBuyNow, wishlist, toggleWishlist }) {
+  const product = PRODUCTS.find((p) => p.id === productId) || PRODUCTS[0];
+  const [zoom, setZoom] = useState(false);
+  const [activeView, setActiveView] = useState(0);
+  const [storageChoice, setStorageChoice] = useState((product.storageOptions || [])[0]);
+  const [colorChoice, setColorChoice] = useState((product.colorOptions || [])[0]);
+  const [qty, setQty] = useState(1);
+  const views = ["Front", "Back", "Side", "Detail"];
+  const related = PRODUCTS.filter((p) => p.categoryId === product.categoryId && p.id !== product.id).slice(0, 4);
+  const unavailable = product.stock === 0;
+
+  useEffect(() => { setActiveView(0); setQty(1); setStorageChoice((product.storageOptions || [])[0]); setColorChoice((product.colorOptions || [])[0]); }, [productId]);
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 md:px-8 py-10">
+      <div className="grid md:grid-cols-2 gap-10">
+        <div>
+          <div onMouseEnter={() => setZoom(true)} onMouseLeave={() => setZoom(false)} className="group">
+            <ProductArt product={product} big zoom />
+          </div>
+          <div className="flex gap-3 mt-4">
+            {views.map((v, i) => (
+              <button key={v} onClick={() => setActiveView(i)} className="flex-1 py-2 text-xs uppercase tracking-wider rounded-xl" style={{ border: `1px solid ${activeView === i ? C.brown : C.border}`, color: activeView === i ? C.brown : C.muted }}>{v}</button>
+            ))}
+          </div>
+        </div>
+        <div>
+          <span className="text-xs uppercase tracking-wider" style={{ color: C.muted }}>{product.brand}</span>
+          <h1 className="text-2xl md:text-3xl font-semibold mt-1" style={{ fontFamily: FONT_DISPLAY, color: C.text }}>{product.name}</h1>
+          <div className="flex items-center gap-2 mt-3">
+            <Stars value={product.rating} />
+            <span className="text-sm" style={{ color: C.muted }}>{product.rating} ({product.reviews} reviews)</span>
+          </div>
+          <div className="mt-4 text-3xl font-bold" style={{ color: C.brown }}>{naira(product.price)}</div>
+          <div className="mt-3 flex items-center gap-2 text-sm" style={{ color: unavailable ? C.danger : C.success }}>
+            <span className="w-2 h-2 rounded-full" style={{ background: unavailable ? C.danger : C.success }} />
+            {product.isComingSoon ? "Coming Soon" : unavailable ? "OUT OF STOCK" : `In Stock (${product.stock} available)`}
+          </div>
+          <p className="mt-5 text-sm leading-relaxed" style={{ color: C.muted }}>{product.description}</p>
+
+          {product.storageOptions && (
+            <div className="mt-5">
+              <h4 className="text-xs uppercase tracking-wider mb-2" style={{ color: C.muted }}>Storage</h4>
+              <div className="flex gap-2 flex-wrap">
+                {product.storageOptions.map((s) => (
+                  <button key={s} onClick={() => setStorageChoice(s)} className="px-4 py-2 text-sm rounded-xl" style={storageChoice === s ? { background: C.brown, color: "#fff" } : { border: `1px solid ${C.border}`, color: C.text }}>{s}</button>
+                ))}
+              </div>
+            </div>
+          )}
+          {product.colorOptions && (
+            <div className="mt-4">
+              <h4 className="text-xs uppercase tracking-wider mb-2" style={{ color: C.muted }}>Colour</h4>
+              <div className="flex gap-2 flex-wrap">
+                {product.colorOptions.map((c) => (
+                  <button key={c} onClick={() => setColorChoice(c)} className="px-4 py-2 text-sm rounded-xl" style={colorChoice === c ? { background: C.brown, color: "#fff" } : { border: `1px solid ${C.border}`, color: C.text }}>{c}</button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="mt-6 flex items-center gap-4">
+            <div className="flex items-center rounded-xl" style={{ border: `1px solid ${C.border}` }}>
+              <button onClick={() => setQty((q) => Math.max(1, q - 1))} className="p-3"><Minus size={14} style={{ color: C.text }} /></button>
+              <span className="px-4 text-sm" style={{ color: C.text }}>{qty}</span>
+              <button onClick={() => setQty((q) => Math.min(product.stock || 1, q + 1))} className="p-3"><Plus size={14} style={{ color: C.text }} /></button>
+            </div>
+            <button onClick={() => toggleWishlist(product.id)} className="p-3 rounded-xl" style={{ border: `1px solid ${C.border}` }}>
+              <Heart size={16} style={{ color: wishlist.has(product.id) ? C.brown : C.text }} fill={wishlist.has(product.id) ? C.brown : "none"} />
+            </button>
+          </div>
+
+          <div className="mt-6 flex flex-col sm:flex-row gap-3">
+            <Button variant="outline" className="flex-1" icon={ShoppingCart} disabled={unavailable} onClick={() => addToCart(product.id, qty)}>{unavailable ? "Out of Stock" : "Add to Cart"}</Button>
+            <Button className="flex-1" disabled={unavailable} onClick={() => onBuyNow(product.id, qty)}>Buy Now</Button>
+          </div>
+
+          <div className="mt-8">
+            <h3 className="text-sm uppercase tracking-wider mb-3" style={{ color: C.brown }}>Specifications</h3>
+            <div className="rounded-xl overflow-hidden" style={{ border: `1px solid ${C.border}` }}>
+              {Object.entries(product.specs).map(([k, v], i) => (
+                <div key={k} className="flex justify-between px-4 py-3 text-sm" style={{ borderTop: i ? `1px solid ${C.border}` : "none", background: i % 2 ? C.surfaceAlt : C.surface }}>
+                  <span style={{ color: C.muted }}>{k}</span><span style={{ color: C.text }}>{v}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-8">
+            <h3 className="text-sm uppercase tracking-wider mb-3" style={{ color: C.brown }}>Customer Reviews</h3>
+            <div className="space-y-3">
+              {REVIEWS_SAMPLE.map((r) => (
+                <div key={r.name} className="p-4 rounded-xl" style={{ background: C.surfaceAlt }}>
+                  <div className="flex items-center justify-between"><span className="text-sm font-semibold" style={{ color: C.text }}>{r.name}</span><Stars value={r.rating} size={12} /></div>
+                  <p className="mt-1 text-sm" style={{ color: C.muted }}>{r.comment}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {related.length > 0 && (
+        <div className="mt-16">
+          <SectionHeading eyebrow="You may also like" title="Related Products" />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+            {related.map((p) => <ProductCard key={p.id} product={p} onView={viewProduct} onAdd={(id) => addToCart(id, 1)} wishlist={wishlist} toggleWishlist={toggleWishlist} />)}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------------------- */
+/*  CART PAGE                                                              */
+/* ---------------------------------------------------------------------- */
+function CartPage({ cart, updateQty, removeItem, setView }) {
+  const lines = cart.map((c) => ({ ...c, product: PRODUCTS.find((p) => p.id === c.id) })).filter((l) => l.product);
+  const subtotal = lines.reduce((s, l) => s + l.product.price * l.qty, 0);
+  const shipping = subtotal === 0 ? 0 : subtotal > 800000 ? 0 : 4500;
+  const total = subtotal + shipping;
+
+  if (lines.length === 0) {
+    return (
+      <div className="max-w-2xl mx-auto px-4 py-24 text-center">
+        <ShoppingCart size={40} style={{ color: C.brown }} className="mx-auto" />
+        <h2 className="mt-4 text-xl font-semibold" style={{ fontFamily: FONT_DISPLAY, color: C.text }}>Your cart is empty</h2>
+        <p className="mt-2 text-sm" style={{ color: C.muted }}>Browse the catalog and find something worth carrying home.</p>
+        <div className="mt-6 flex justify-center"><Button onClick={() => setView("shop")} icon={ArrowRight}>Go to Shop</Button></div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-6xl mx-auto px-4 md:px-8 py-10">
+      <SectionHeading eyebrow="Cart" title="Your Bag" sub={`${lines.length} item${lines.length > 1 ? "s" : ""}`} />
+      <div className="grid md:grid-cols-3 gap-10">
+        <div className="md:col-span-2 space-y-4">
+          {lines.map((l) => (
+            <div key={l.id} className="flex gap-4 p-4 rounded-2xl" style={{ background: C.surface, border: `1px solid ${C.border}` }}>
+              <div className="w-24 shrink-0"><ProductArt product={l.product} /></div>
+              <div className="flex-1 flex flex-col justify-between">
+                <div><span className="text-xs uppercase tracking-wider" style={{ color: C.muted }}>{l.product.brand}</span><h3 className="text-sm md:text-base font-medium" style={{ color: C.text }}>{l.product.name}</h3></div>
+                <div className="flex items-center justify-between mt-2">
+                  <div className="flex items-center rounded-xl" style={{ border: `1px solid ${C.border}` }}>
+                    <button onClick={() => updateQty(l.id, Math.max(1, l.qty - 1))} className="p-2"><Minus size={12} style={{ color: C.text }} /></button>
+                    <span className="px-3 text-sm" style={{ color: C.text }}>{l.qty}</span>
+                    <button onClick={() => updateQty(l.id, l.qty + 1)} className="p-2"><Plus size={12} style={{ color: C.text }} /></button>
+                  </div>
+                  <span className="text-sm font-bold" style={{ color: C.brown }}>{naira(l.product.price * l.qty)}</span>
+                </div>
+              </div>
+              <button onClick={() => removeItem(l.id)}><Trash2 size={16} style={{ color: C.muted }} /></button>
+            </div>
+          ))}
+        </div>
+        <div className="p-6 h-fit rounded-2xl" style={{ background: C.surface, border: `1px solid ${C.border}` }}>
+          <h3 className="text-sm uppercase tracking-wider mb-4" style={{ color: C.brown }}>Order Summary</h3>
+          <div className="space-y-2 text-sm">
+            <div className="flex justify-between" style={{ color: C.muted }}><span>Subtotal</span><span>{naira(subtotal)}</span></div>
+            <div className="flex justify-between" style={{ color: C.muted }}><span>Shipping Fee</span><span>{shipping === 0 ? "Free" : naira(shipping)}</span></div>
+          </div>
+          <div className="flex justify-between mt-4 pt-4 text-base font-semibold" style={{ borderTop: `1px solid ${C.border}`, color: C.text }}>
+            <span>Grand Total</span><span style={{ color: C.brown }}>{naira(total)}</span>
+          </div>
+          <Button className="w-full mt-6" fullWidth onClick={() => setView("checkout")} icon={ArrowRight}>Proceed to Checkout</Button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------------------- */
+/*  CHECKOUT PAGE                                                          */
+/* ---------------------------------------------------------------------- */
+function CheckoutPage({ cart, setView, clearCart, placeOrder }) {
+  const lines = cart.map((c) => ({ ...c, product: PRODUCTS.find((p) => p.id === c.id) })).filter((l) => l.product);
+  const subtotal = lines.reduce((s, l) => s + l.product.price * l.qty, 0);
+  const shipping = subtotal === 0 ? 0 : subtotal > 800000 ? 0 : 4500;
+  const total = subtotal + shipping;
+  const [form, setForm] = useState({ fullName: "", phone: "", email: "", address: "", state: "", city: "", method: "paystack" });
+  const [placed, setPlaced] = useState(false);
+  const update = (k, v) => setForm((f) => ({ ...f, [k]: v }));
+
+  if (placed) {
+    return (
+      <div className="max-w-xl mx-auto px-4 py-24 text-center">
+        <Check size={42} style={{ color: C.brown }} className="mx-auto" />
+        <h2 className="mt-4 text-2xl font-semibold" style={{ fontFamily: FONT_DISPLAY, color: C.text }}>Order placed</h2>
+        <p className="mt-2 text-sm" style={{ color: C.muted }}>This order is now visible in the Admin Dashboard's Order Management queue, and stock has been reduced accordingly.</p>
+        <div className="mt-6"><Button onClick={() => { clearCart(); setView("home"); }}>Back to Home</Button></div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-6xl mx-auto px-4 md:px-8 py-10">
+      <SectionHeading eyebrow="Checkout" title="Delivery & Payment" />
+      <form onSubmit={(e) => { e.preventDefault(); placeOrder(form, lines, total); setPlaced(true); }} className="grid md:grid-cols-3 gap-10">
+        <div className="md:col-span-2 space-y-6">
+          <div>
+            <h3 className="text-sm uppercase tracking-wider mb-3" style={{ color: C.brown }}>Contact</h3>
+            <div className="grid sm:grid-cols-2 gap-4">
+              <Input label="Full Name" required value={form.fullName} onChange={(e) => update("fullName", e.target.value)} />
+              <Input label="Phone Number" required value={form.phone} onChange={(e) => update("phone", e.target.value)} />
+              <div className="sm:col-span-2"><Input label="Email Address" type="email" required value={form.email} onChange={(e) => update("email", e.target.value)} /></div>
+            </div>
+          </div>
+          <div>
+            <h3 className="text-sm uppercase tracking-wider mb-3" style={{ color: C.brown }}>Delivery Address</h3>
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div className="sm:col-span-2"><Input label="Address" required value={form.address} onChange={(e) => update("address", e.target.value)} /></div>
+              <Input label="State" required value={form.state} onChange={(e) => update("state", e.target.value)} />
+              <Input label="City" required value={form.city} onChange={(e) => update("city", e.target.value)} />
+            </div>
+          </div>
+          <div>
+            <h3 className="text-sm uppercase tracking-wider mb-3" style={{ color: C.brown }}>Payment Method</h3>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {["paystack", "flutterwave"].map((m) => (
+                <button key={m} type="button" onClick={() => update("method", m)} className="p-4 text-left text-sm capitalize rounded-xl" style={{ border: `1px solid ${form.method === m ? C.brown : C.border}`, color: form.method === m ? C.brown : C.text }}>
+                  {m} <span className="block text-xs mt-1" style={{ color: C.muted }}>Debit Card · Bank Transfer · USSD</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="p-6 h-fit rounded-2xl" style={{ background: C.surface, border: `1px solid ${C.border}` }}>
+          <h3 className="text-sm uppercase tracking-wider mb-4" style={{ color: C.brown }}>Order Summary</h3>
+          <div className="space-y-3 max-h-48 overflow-y-auto pr-1">
+            {lines.map((l) => <div key={l.id} className="flex justify-between text-sm"><span style={{ color: C.muted }}>{l.product.name} × {l.qty}</span><span style={{ color: C.text }}>{naira(l.product.price * l.qty)}</span></div>)}
+          </div>
+          <div className="space-y-2 text-sm mt-4 pt-4" style={{ borderTop: `1px solid ${C.border}` }}>
+            <div className="flex justify-between" style={{ color: C.muted }}><span>Shipping</span><span>{shipping === 0 ? "Free" : naira(shipping)}</span></div>
+          </div>
+          <div className="flex justify-between mt-3 pt-3 text-base font-semibold" style={{ borderTop: `1px solid ${C.border}`, color: C.text }}>
+            <span>Grand Total</span><span style={{ color: C.brown }}>{naira(total)}</span>
+          </div>
+          <Button type="submit" fullWidth className="mt-6" disabled={lines.length === 0}>Place Order</Button>
+        </div>
+      </form>
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------------------- */
+/*  REQUEST A DEVICE                                                       */
+/* ---------------------------------------------------------------------- */
+function RequestDevicePage({ submitRequest }) {
+  const [form, setForm] = useState({ fullName: "", phone: "", email: "", deviceName: "", brand: "", storage: "", color: "", condition: "new", notes: "" });
+  const [sent, setSent] = useState(false);
+  const update = (k, v) => setForm((f) => ({ ...f, [k]: v }));
+
+  if (sent) {
+    return (
+      <div className="max-w-xl mx-auto px-4 py-24 text-center">
+        <Check size={42} style={{ color: C.brown }} className="mx-auto" />
+        <h2 className="mt-4 text-2xl font-semibold" style={{ fontFamily: FONT_DISPLAY, color: C.text }}>Request received</h2>
+        <p className="mt-2 text-sm" style={{ color: C.muted }}>Our sourcing team will reach out by phone or email. It now also appears in the Admin Dashboard's Request Management queue.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-2xl mx-auto px-4 md:px-8 py-12">
+      <SectionHeading eyebrow="Can't find it?" title="Request a Device" sub="Tell us exactly what you're after — we'll source it." />
+      <form onSubmit={(e) => { e.preventDefault(); submitRequest(form); setSent(true); }} className="space-y-4 p-7 rounded-2xl" style={{ background: C.surface, border: `1px solid ${C.border}` }}>
+        <div className="grid sm:grid-cols-2 gap-4">
+          <Input label="Full Name" required value={form.fullName} onChange={(e) => update("fullName", e.target.value)} />
+          <Input label="Phone Number" required value={form.phone} onChange={(e) => update("phone", e.target.value)} />
+        </div>
+        <Input label="Email Address" type="email" required value={form.email} onChange={(e) => update("email", e.target.value)} />
+        <div className="grid sm:grid-cols-2 gap-4">
+          <Input label="Device Name" required value={form.deviceName} onChange={(e) => update("deviceName", e.target.value)} />
+          <Input label="Brand" required value={form.brand} onChange={(e) => update("brand", e.target.value)} />
+        </div>
+        <div className="grid sm:grid-cols-2 gap-4">
+          <Input label="Storage Capacity" value={form.storage} onChange={(e) => update("storage", e.target.value)} />
+          <Input label="Colour" value={form.color} onChange={(e) => update("color", e.target.value)} />
+        </div>
+        <div>
+          <span className="block text-xs mb-1.5" style={{ color: C.muted }}>Condition</span>
+          <div className="flex gap-3">
+            {["new", "used"].map((c) => (
+              <button key={c} type="button" onClick={() => update("condition", c)} className="flex-1 py-2.5 text-sm capitalize rounded-xl" style={{ border: `1px solid ${form.condition === c ? C.brown : C.border}`, color: form.condition === c ? C.brown : C.text }}>{c}</button>
+            ))}
+          </div>
+        </div>
+        <label className="block">
+          <span className="block text-xs mb-1.5" style={{ color: C.muted }}>Additional Notes</span>
+          <textarea rows={4} value={form.notes} onChange={(e) => update("notes", e.target.value)} className="w-full px-4 py-3 text-sm outline-none resize-none rounded-xl" style={{ background: C.surfaceAlt, border: `1px solid ${C.border}`, color: C.text }} />
+        </label>
+        <Button type="submit" fullWidth icon={Send}>Submit Request</Button>
+      </form>
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------------------- */
+/*  WISHLIST / ORDERS                                                      */
+/* ---------------------------------------------------------------------- */
+function WishlistPage({ wishlist, toggleWishlist, viewProduct, addToCart, setView }) {
+  const items = PRODUCTS.filter((p) => wishlist.has(p.id));
+  return (
+    <div className="max-w-7xl mx-auto px-4 md:px-8 py-10">
+      <SectionHeading eyebrow="Saved" title="Your Wishlist" sub={`${items.length} saved product${items.length === 1 ? "" : "s"}`} />
+      {items.length === 0 ? (
+        <div className="py-16 text-center"><p className="text-sm mb-4" style={{ color: C.muted }}>Nothing saved yet.</p><Button onClick={() => setView("shop")}>Browse Shop</Button></div>
+      ) : (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+          {items.map((p) => <ProductCard key={p.id} product={p} onView={viewProduct} onAdd={addToCart} wishlist={wishlist} toggleWishlist={toggleWishlist} />)}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function OrdersPage({ orders, setView }) {
+  const statusTone = { Pending: "warning", Processing: "warning", Shipped: "success", Delivered: "success", Cancelled: "danger" };
+  return (
+    <div className="max-w-4xl mx-auto px-4 md:px-8 py-10">
+      <SectionHeading eyebrow="Track" title="My Orders" />
+      {orders.length === 0 ? (
+        <div className="py-16 text-center"><p className="text-sm mb-4" style={{ color: C.muted }}>No orders yet.</p><Button onClick={() => setView("shop")}>Start Shopping</Button></div>
+      ) : (
+        <div className="space-y-4">
+          {orders.map((o) => (
+            <div key={o.id} className="p-5 rounded-2xl" style={{ background: C.surface, border: `1px solid ${C.border}` }}>
+              <div className="flex justify-between items-start">
+                <div>
+                  <div className="text-sm font-semibold" style={{ color: C.text }}>Order #{o.id}</div>
+                  <div className="text-xs mt-1" style={{ color: C.muted }}>{o.items.length} item(s) · {o.date}</div>
+                </div>
+                <Badge tone={statusTone[o.status]}>{o.status}</Badge>
+              </div>
+              <div className="mt-3 text-sm font-bold" style={{ color: C.brown }}>{naira(o.total)}</div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------------------- */
+/*  ADMIN DASHBOARD                                                        */
+/* ---------------------------------------------------------------------- */
+function AdminDashboard({ orders, requests, setView, advanceOrder, cancelOrder, restockProduct }) {
+  const [tab, setTab] = useState("overview");
+  const revenue = orders.filter((o) => o.status !== "Cancelled").reduce((s, o) => s + o.total, 0);
+  const lowStock = PRODUCTS.filter((p) => p.stock > 0 && p.stock <= 6).length;
+  const outOfStock = PRODUCTS.filter((p) => p.stock === 0 && !p.isComingSoon);
+
+  const tabs = [
+    { id: "overview", label: "Overview", icon: LayoutDashboard },
+    { id: "products", label: "Products", icon: Package },
+    { id: "orders", label: "Orders", icon: ShoppingCart },
+    { id: "customers", label: "Customers", icon: Users },
+    { id: "requests", label: "Requests", icon: MessageCircle },
+  ];
+
+  const statusFlow = ["Pending", "Processing", "Shipped", "Delivered"];
+
+  return (
+    <div className="min-h-screen flex" style={{ background: C.bg }}>
+      <aside className="hidden md:flex flex-col w-60 shrink-0 p-5" style={{ background: C.brownDark }}>
+        <Logo light onClick={() => setView("home")} />
+        <nav className="mt-8 space-y-1">
+          {tabs.map((t) => (
+            <button key={t.id} onClick={() => setTab(t.id)} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm" style={{ background: tab === t.id ? "rgba(255,255,255,0.12)" : "transparent", color: "#fff" }}>
+              <t.icon size={16} /> {t.label}
+            </button>
+          ))}
+        </nav>
+        <button onClick={() => setView("home")} className="mt-auto flex items-center gap-2 text-xs" style={{ color: "#EAD9C4" }}><ArrowLeft size={14} /> Exit to storefront</button>
+      </aside>
+
+      <main className="flex-1 p-6 md:p-10 overflow-y-auto">
+        <h1 className="text-2xl font-semibold mb-6" style={{ fontFamily: FONT_DISPLAY, color: C.text }}>
+          {tabs.find((t) => t.id === tab)?.label}
+        </h1>
+
+        {tab === "overview" && (
+          <>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+              {[
+                { label: "Total Products", value: PRODUCTS.length, icon: Package },
+                { label: "Total Orders", value: orders.length, icon: ShoppingCart },
+                { label: "Total Customers", value: 642, icon: Users },
+                { label: "Revenue", value: naira(revenue), icon: TrendingUp },
+              ].map((s) => (
+                <div key={s.label} className="p-5 rounded-2xl" style={{ background: C.surface, border: `1px solid ${C.border}` }}>
+                  <s.icon size={20} style={{ color: C.brown }} />
+                  <div className="text-2xl font-bold mt-3" style={{ color: C.text }}>{s.value}</div>
+                  <div className="text-xs mt-1" style={{ color: C.muted }}>{s.label}</div>
+                </div>
+              ))}
+            </div>
+            {outOfStock.length > 0 && (
+              <div className="mb-8 p-4 rounded-xl flex items-center gap-3" style={{ background: "#FBEAE7", border: `1px solid ${C.danger}33` }}>
+                <XCircle size={18} style={{ color: C.danger }} />
+                <span className="text-sm" style={{ color: C.danger }}>{outOfStock.length} product(s) out of stock — {lowStock} more running low.</span>
+              </div>
+            )}
+            <h3 className="text-sm uppercase tracking-wider mb-3" style={{ color: C.brown }}>Recent Orders</h3>
+            <div className="space-y-3">
+              {orders.slice(0, 5).map((o) => (
+                <div key={o.id} className="p-4 rounded-xl flex justify-between items-center" style={{ background: C.surface, border: `1px solid ${C.border}` }}>
+                  <div><span className="text-sm font-semibold" style={{ color: C.text }}>#{o.id}</span><span className="text-xs ml-2" style={{ color: C.muted }}>{o.customer.fullName}</span></div>
+                  <span className="text-sm font-bold" style={{ color: C.brown }}>{naira(o.total)}</span>
+                </div>
+              ))}
+              {orders.length === 0 && <p className="text-sm" style={{ color: C.muted }}>No orders placed yet — they'll appear here immediately when a customer checks out.</p>}
+            </div>
+          </>
+        )}
+
+        {tab === "products" && (
+          <div className="space-y-3">
+            <Button icon={Plus} className="mb-4">Add Product</Button>
+            {PRODUCTS.slice(0, 30).map((p) => (
+              <div key={p.id} className="p-4 rounded-xl flex items-center gap-4" style={{ background: C.surface, border: `1px solid ${C.border}` }}>
+                <div className="w-14 h-14 shrink-0"><ProductArt product={p} /></div>
+                <div className="flex-1">
+                  <div className="text-sm font-semibold" style={{ color: C.text }}>{p.name}</div>
+                  <div className="text-xs" style={{ color: C.muted }}>{naira(p.price)} · Stock: {p.stock} {p.stock === 0 && <span style={{ color: C.danger }}>· OUT OF STOCK</span>}</div>
+                </div>
+                {p.stock === 0 ? (
+                  <button onClick={() => restockProduct(p.id)} className="text-xs px-3 py-1.5 rounded-full flex items-center gap-1" style={{ border: `1px solid ${C.success}`, color: C.success }}><ArchiveRestore size={12} /> Restock</button>
+                ) : (
+                  <button className="text-xs px-3 py-1.5 rounded-full flex items-center gap-1" style={{ border: `1px solid ${C.border}`, color: C.muted }}><Archive size={12} /> Archive</button>
+                )}
+              </div>
+            ))}
+            <p className="text-xs text-center pt-2" style={{ color: C.muted }}>Showing 30 of {PRODUCTS.length} products.</p>
+          </div>
+        )}
+
+        {tab === "orders" && (
+          <div className="space-y-4">
+            {orders.length === 0 && <p className="text-sm" style={{ color: C.muted }}>No orders yet. Place one from the storefront checkout to see it appear here instantly.</p>}
+            {orders.map((o) => (
+              <div key={o.id} className="p-5 rounded-2xl" style={{ background: C.surface, border: `1px solid ${C.border}` }}>
+                <div className="flex flex-wrap justify-between gap-3">
+                  <div>
+                    <div className="text-sm font-semibold" style={{ color: C.text }}>#{o.id} — {o.customer.fullName}</div>
+                    <div className="text-xs mt-1" style={{ color: C.muted }}>{o.customer.phone} · {o.customer.address}, {o.customer.city}, {o.customer.state}</div>
+                    <div className="text-xs mt-1" style={{ color: C.muted }}>{o.items.map((i) => `${i.name} ×${i.qty}`).join(", ")}</div>
+                  </div>
+                  <div className="text-right">
+                    <Badge tone={o.status === "Cancelled" ? "danger" : o.status === "Delivered" ? "success" : "warning"}>{o.status}</Badge>
+                    <div className="text-sm font-bold mt-2" style={{ color: C.brown }}>{naira(o.total)}</div>
+                  </div>
+                </div>
+                {o.status !== "Cancelled" && o.status !== "Delivered" && (
+                  <div className="flex gap-2 mt-4 flex-wrap">
+                    {statusFlow[statusFlow.indexOf(o.status) + 1] && (
+                      <button onClick={() => advanceOrder(o.id)} className="text-xs px-3 py-1.5 rounded-full flex items-center gap-1" style={{ background: C.brown, color: "#fff" }}>
+                        <CheckCircle2 size={12} /> Mark as {statusFlow[statusFlow.indexOf(o.status) + 1]}
+                      </button>
+                    )}
+                    <button onClick={() => cancelOrder(o.id)} className="text-xs px-3 py-1.5 rounded-full flex items-center gap-1" style={{ border: `1px solid ${C.danger}`, color: C.danger }}><XCircle size={12} /> Cancel Order</button>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {tab === "customers" && (
+          <div className="space-y-3">
+            {[{ name: "Adaeze Okafor", email: "adaeze@email.com", orders: 4, spend: 2860000 }, { name: "Tunde King", email: "tunde@email.com", orders: 2, spend: 1420000 }, { name: "Ifeoma Bello", email: "ifeoma@email.com", orders: 6, spend: 980000 }].map((c) => (
+              <div key={c.email} className="p-4 rounded-xl flex justify-between items-center" style={{ background: C.surface, border: `1px solid ${C.border}` }}>
+                <div><div className="text-sm font-semibold" style={{ color: C.text }}>{c.name}</div><div className="text-xs" style={{ color: C.muted }}>{c.email}</div></div>
+                <div className="text-right"><div className="text-sm font-bold" style={{ color: C.brown }}>{naira(c.spend)}</div><div className="text-xs" style={{ color: C.muted }}>{c.orders} orders</div></div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {tab === "requests" && (
+          <div className="space-y-3">
+            {requests.length === 0 && <p className="text-sm" style={{ color: C.muted }}>No device requests yet. Submit one from the Request a Device page to see it here.</p>}
+            {requests.map((r) => (
+              <div key={r.id} className="p-4 rounded-xl" style={{ background: C.surface, border: `1px solid ${C.border}` }}>
+                <div className="flex justify-between"><span className="text-sm font-semibold" style={{ color: C.text }}>{r.deviceName} ({r.brand})</span><Badge tone="warning">New</Badge></div>
+                <div className="text-xs mt-1" style={{ color: C.muted }}>{r.fullName} · {r.phone} · {r.email}</div>
+                <div className="text-xs mt-1" style={{ color: C.muted }}>{r.storage} · {r.color} · {r.condition}</div>
+                {r.notes && <div className="text-xs mt-2 italic" style={{ color: C.muted }}>"{r.notes}"</div>}
+              </div>
+            ))}
+          </div>
+        )}
+      </main>
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------------------- */
+/*  TOAST                                                                  */
+/* ---------------------------------------------------------------------- */
+function Toast({ message }) {
+  if (!message) return null;
+  return (
+    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-5 py-3 text-sm flex items-center gap-2 rounded-full" style={{ background: C.brown, color: "#fff", fontWeight: 600 }}>
+      <Check size={16} /> {message}
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------------------- */
+/*  ROOT APP                                                               */
+/* ---------------------------------------------------------------------- */
+function App() {
+  useEffect(() => {
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = "https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap";
+    document.head.appendChild(link);
+    return () => document.head.removeChild(link);
+  }, []);
+
+  const [view, setViewRaw] = useState("welcome");
+  const [productId, setProductId] = useState(null);
+  const [categoryFilter, setCategoryFilter] = useState(null);
+  const [cart, setCart] = useState([]);
+  const [wishlist, setWishlist] = useState(new Set());
+  const [orders, setOrders] = useState([]);
+  const [requests, setRequests] = useState([]);
+  const [toast, setToast] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
+
+  const setView = (v, cat) => { setViewRaw(v); if (cat !== undefined) setCategoryFilter(cat); window.scrollTo(0, 0); };
+
+  useEffect(() => { if (!toast) return; const t = setTimeout(() => setToast(null), 2000); return () => clearTimeout(t); }, [toast]);
+  const showToast = (m) => setToast(m);
+
+  const addToCart = (id, qty = 1) => {
+    const product = PRODUCTS.find((p) => p.id === id);
+    if (product && product.stock === 0) { showToast("Out of stock"); return; }
+    setCart((prev) => { const existing = prev.find((c) => c.id === id); if (existing) return prev.map((c) => c.id === id ? { ...c, qty: c.qty + qty } : c); return [...prev, { id, qty }]; });
+    showToast("Added to cart");
+  };
+  const buyNow = (id, qty = 1) => { addToCart(id, qty); setView("checkout"); };
+  const updateQty = (id, qty) => setCart((prev) => prev.map((c) => c.id === id ? { ...c, qty } : c));
+  const removeItem = (id) => setCart((prev) => prev.filter((c) => c.id !== id));
+  const clearCart = () => setCart([]);
+  const viewProduct = (id) => { setProductId(id); setView("product"); };
+  const toggleWishlist = (id) => setWishlist((prev) => { const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n; });
+
+  const placeOrder = (form, lines, total) => {
+    const id = "YPG" + Math.floor(1000 + Math.random() * 9000);
+    const newOrder = {
+      id, status: "Pending", total, date: new Date().toLocaleDateString(),
+      customer: form, items: lines.map((l) => ({ name: l.product.name, qty: l.qty, productId: l.product.id })),
+    };
+    setOrders((prev) => [newOrder, ...prev]);
+    lines.forEach((l) => { const p = PRODUCTS.find((pp) => pp.id === l.product.id); if (p) p.stock = Math.max(0, p.stock - l.qty); });
+  };
+  const advanceOrder = (id) => setOrders((prev) => prev.map((o) => {
+    if (o.id !== id) return o;
+    const flow = ["Pending", "Processing", "Shipped", "Delivered"];
+    const next = flow[flow.indexOf(o.status) + 1] || o.status;
+    return { ...o, status: next };
+  }));
+  const cancelOrder = (id) => setOrders((prev) => prev.map((o) => o.id === id ? { ...o, status: "Cancelled" } : o));
+  const restockProduct = (id) => { const p = PRODUCTS.find((pp) => pp.id === id); if (p) p.stock = 25; showToast("Product restocked"); };
+  const submitRequest = (form) => setRequests((prev) => [{ id: Date.now(), ...form }, ...prev]);
+
+  const cartCount = cart.reduce((s, c) => s + c.qty, 0);
+
+  if (view === "welcome") return <WelcomePage setView={setView} />;
+  if (view === "login") return <LoginPage setView={setView} onAuth={(u) => { setCurrentUser(u); setView("home"); }} />;
+  if (view === "signup") return <SignupPage setView={setView} onAuth={(u) => { setCurrentUser(u); setView("home"); }} />;
+  if (view === "adminLogin") return <AdminLoginPage setView={setView} onAdminAuth={() => setView("admin")} />;
+  if (view === "admin") return <AdminDashboard orders={orders} requests={requests} setView={setView} advanceOrder={advanceOrder} cancelOrder={cancelOrder} restockProduct={restockProduct} />;
+
+  return (
+    <div style={{ background: C.bg, minHeight: "100vh", color: C.text, fontFamily: FONT_BODY }}>
+      <Navbar view={view} setView={setView} cartCount={cartCount} wishCount={wishlist.size} search="" setSearch={() => {}} currentUser={currentUser} />
+      {view === "home" && <HomePage setView={setView} viewProduct={viewProduct} addToCart={addToCart} wishlist={wishlist} toggleWishlist={toggleWishlist} />}
+      {view === "shop" && <ShopPage initialCategory={categoryFilter} viewProduct={viewProduct} addToCart={addToCart} wishlist={wishlist} toggleWishlist={toggleWishlist} />}
+      {view === "product" && <ProductPage productId={productId} viewProduct={viewProduct} addToCart={addToCart} onBuyNow={buyNow} wishlist={wishlist} toggleWishlist={toggleWishlist} />}
+      {view === "cart" && <CartPage cart={cart} updateQty={updateQty} removeItem={removeItem} setView={setView} />}
+      {view === "checkout" && <CheckoutPage cart={cart} setView={setView} clearCart={clearCart} placeOrder={placeOrder} />}
+      {view === "request" && <RequestDevicePage submitRequest={submitRequest} />}
+      {view === "wishlist" && <WishlistPage wishlist={wishlist} toggleWishlist={toggleWishlist} viewProduct={viewProduct} addToCart={addToCart} setView={setView} />}
+      {view === "orders" && <OrdersPage orders={orders} setView={setView} />}
+      <Footer setView={setView} />
+      <WhatsAppButton />
+      <Toast message={toast} />
+    </div>
+  );
+}
+
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+</script>
+</body>
+</html>
